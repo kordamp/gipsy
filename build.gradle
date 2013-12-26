@@ -22,22 +22,22 @@ apply from: 'gradle/coverage.gradle'
 apply from: 'gradle/codeQuality.gradle'
 apply from: 'gradle/publish.gradle'
 
+repositories {
+    jcenter()
+    maven {
+        name 'Kordamp'
+        url 'http://dl.bintray.com/content/aalmiray/kordamp'
+    }
+}
+
 dependencies {
     compile "org.kordamp.jipsy:jipsy:${project.version}"
     compile "org.codehaus.groovy:groovy-all:${groovyVersion}"
+    testCompile 'junit:junit:4.11'
 }
 
 task sourceJar(type: Jar) {
     from sourceSets.main.allJava
-}
-
-repositories {
-    jcenter()
-    mavenLocal()
-}
-
-dependencies {
-    testCompile 'junit:junit:4.11'
 }
 
 compileJava {

@@ -39,7 +39,7 @@ public abstract class AbstractFileInitializer implements Initializer {
 
     @Override
     public CharSequence initialData(String name) {
-        File file = new File(outputDir.getAbsolutePath()+File.separator + path + name);
+        File file = new File(outputDir.getAbsolutePath() + File.separator + path + name);
         file.getParentFile().mkdirs();
 
         CharSequence result;

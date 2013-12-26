@@ -6,13 +6,22 @@ image::https://travis-ci.org/aalmiray/gipsy.png?branch=master["Build Status", li
 
 image::https://d2weczhvl823v0.cloudfront.net/aalmiray/gipsy/trend.png["Bitdeli Badge", link="https://bitdeli.com/free"]
 
-Groovy version of https://github.com/aalmiray/jipsy[Jipsy], a configurable Java Annotation Processor to simplify the use of
+Groovy version of https://github.com/aalmiray/jipsy[Jipsy], a configurable AST Transformation to simplify the use of
 the Service Provider Interface.
 
 == Introduction
 
-Gipsy delivers the same functionality that Jipsy does but uses Groovy's AST Transformations instead of t JDK6' Annotation
-Processor.
+Gipsy delivers the same functionality that https://github.com/aalmiray/jipsy[Jipsy] does but uses Groovy's AST Transformations
+instead of JDK6' Annotation Processor.
+
+As explained at the http://docs.oracle.com/javase/6/docs/api/java/util/ServiceLoader.html[service loader documentation],
+services must follow certain rules in order to be considered as such; they also must be registered using an standard location
+based on a naming convention. The following rules apply to classes that may be considered services
+
+. The class must implement at least one target interface (the service interface).
+. The class must provide a no-args constructor.
+. The class must be public.
+. The class name should be added to a file named `META-INF/services/<target_interface_name>`
 
 This library provides a mechanism for enforcing those rules by simply adding an annotation on each service implementation, for
 example say there exists the following `Calculator` service interface
@@ -40,8 +49,8 @@ class BasicCalculator implements Calculator {
 }
 ----
 
-Compile your code. If you look closely at your project's output you'll see a file named
-`META-INF/services/com.acme.Calculator` whose contents should look similar to
+Notice that Gipsy reuses the same annotations from Jipsy. Compile your code. If you look closely at your
+project's output you'll see a file named `META-INF/services/com.acme.Calculator` whose contents should look similar to
 
 [source]
 [subs="verbatim,attributes"]
@@ -95,9 +104,9 @@ idea {
 }
 ----
 
-Use the `provided` scope in order to mark Jipsy as a compile-only dependency; this also avoids exposing Jipsy to
+Use the `provided` scope in order to mark Gipsy as a compile-only dependency; this also avoids exposing Gipsy to
 consumers of your library.
 
-== Creating Your Own Processors
+== Creating Your Own AST Transformations
 
 TBD

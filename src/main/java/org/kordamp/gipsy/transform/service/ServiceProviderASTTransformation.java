@@ -21,6 +21,7 @@ import org.codehaus.groovy.ast.ClassNode;
 import org.codehaus.groovy.ast.ModuleNode;
 import org.codehaus.groovy.ast.expr.ClassExpression;
 import org.codehaus.groovy.control.CompilePhase;
+import org.codehaus.groovy.transform.ASTTransformation;
 import org.codehaus.groovy.transform.GroovyASTTransformation;
 import org.kordamp.gipsy.transform.GipsyASTTransformation;
 import org.kordamp.jipsy.ServiceProviderFor;
@@ -40,6 +41,7 @@ import static java.lang.reflect.Modifier.isStatic;
 /**
  * @author Andres Almiray
  */
+@ServiceProviderFor(ASTTransformation.class)
 @GroovyASTTransformation(phase = CompilePhase.CANONICALIZATION)
 public class ServiceProviderASTTransformation extends GipsyASTTransformation {
     public static final String NAME = ServiceProviderASTTransformation.class.getName()
