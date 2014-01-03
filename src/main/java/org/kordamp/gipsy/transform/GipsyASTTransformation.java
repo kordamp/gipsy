@@ -124,4 +124,25 @@ public abstract class GipsyASTTransformation extends AbstractASTTransformation {
         }
         throw new IllegalStateException("No value found in element");
     }
+
+    protected List<Expression> findCollectionValueMember(AnnotationNode annotation, String memberName) {
+        Expression value = annotation.getMember(memberName);
+        if (value instanceof ListExpression) {
+            ListExpression list = (ListExpression) value;
+            return list.getExpressions();
+        } else if (value != null) {
+            return Collections.singletonList(value);
+        }
+        throw new IllegalStateException("No value found for member " + memberName);
+    }
+
+    protected Expression findSingleValueMember(AnnotationNode annotation, String memberName) {
+        Expression value = annotation.getMember(memberName);
+        if (value instanceof ListExpression) {
+            ListExpression list = (ListExpression) value;
+            List<Expression> values = list.getExpressions();
+            return values != null && !values.isEmpty() ? values.get(0) : null;
+        }
+        return value;
+    }
 }

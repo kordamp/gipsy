@@ -20,6 +20,7 @@ import org.codehaus.groovy.ast.AnnotationNode;
 import org.codehaus.groovy.ast.ClassNode;
 import org.codehaus.groovy.ast.ModuleNode;
 import org.codehaus.groovy.ast.expr.ClassExpression;
+import org.codehaus.groovy.ast.expr.Expression;
 import org.codehaus.groovy.control.CompilePhase;
 import org.codehaus.groovy.transform.ASTTransformation;
 import org.codehaus.groovy.transform.GroovyASTTransformation;
@@ -48,7 +49,6 @@ public class ServiceProviderASTTransformation extends GipsyASTTransformation {
         + " (" + ServiceProviderASTTransformation.class.getPackage().getImplementationVersion() + ")";
 
     private static final ClassNode SERVICE_PROVIDER_FOR_TYPE = makeClassSafe(ServiceProviderFor.class);
-
 
     private Persistence persistence;
     private ServiceCollector data;
@@ -129,8 +129,10 @@ public class ServiceProviderASTTransformation extends GipsyASTTransformation {
         List<ClassNode> services = new ArrayList<ClassNode>();
 
         for (AnnotationNode annotation : annotations) {
-            for (ClassExpression expr : findClassListValue(annotation)) {
-                services.add(expr.getType());
+            for (Expression expr : findCollectionValueMember(annotation, "value")) {
+                if (expr instanceof ClassExpression) {
+                    services.add(((ClassExpression) expr).getType());
+                }
             }
         }
 
