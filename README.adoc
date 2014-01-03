@@ -6,6 +6,8 @@ image::https://travis-ci.org/aalmiray/gipsy.png?branch=master["Build Status", li
 
 image::https://d2weczhvl823v0.cloudfront.net/aalmiray/gipsy/trend.png["Bitdeli Badge", link="https://bitdeli.com/free"]
 
+image::https://api.bintray.com/packages/aalmiray/kordamp/jipsy/images/download.png["Bintray", link="https://bintray.com/aalmiray/kordamp/gipsy/{version}"]
+
 Groovy version of https://github.com/aalmiray/jipsy[Jipsy], a configurable AST Transformation to simplify the use of
 the Service Provider Interface.
 
