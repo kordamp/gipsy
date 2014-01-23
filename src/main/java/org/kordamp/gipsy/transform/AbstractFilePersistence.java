@@ -76,8 +76,12 @@ public abstract class AbstractFilePersistence extends AbstractPersistence {
     }
 
     @Override
+    public void delete() throws IOException {
+        new File(outputDir.getAbsolutePath() + File.separator + path + name).delete();
+    }
+
+    @Override
     protected Writer createWriter(String name) throws IOException {
-        System.out.print(name);
         return new BufferedWriter(new FileWriter(getResourceFile(name)));
     }
 }

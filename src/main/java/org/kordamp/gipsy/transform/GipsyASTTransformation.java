@@ -17,7 +17,6 @@
 package org.kordamp.gipsy.transform;
 
 import org.codehaus.groovy.ast.*;
-import org.codehaus.groovy.ast.expr.ClassExpression;
 import org.codehaus.groovy.ast.expr.Expression;
 import org.codehaus.groovy.ast.expr.ListExpression;
 import org.codehaus.groovy.control.SourceUnit;
@@ -27,7 +26,6 @@ import org.kordamp.jipsy.processor.Options;
 import org.kordamp.jipsy.processor.ProcessorLogger;
 import org.kordamp.jipsy.processor.service.ServiceProviderProcessor;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -104,25 +102,6 @@ public abstract class GipsyASTTransformation extends AbstractASTTransformation {
             message = "does not extend";
         }
         return CheckResult.valueOf(message + " " + type.getName());
-    }
-
-    protected List<ClassExpression> findClassListValue(AnnotationNode annotation) {
-        Expression value = annotation.getMember("value");
-        if (value instanceof ClassExpression) {
-            return Collections.singletonList((ClassExpression) value);
-        } else if (value instanceof ListExpression) {
-            List<ClassExpression> classes = new ArrayList<ClassExpression>();
-            ListExpression list = (ListExpression) value;
-            for (Expression expression : list.getExpressions()) {
-                if (expression instanceof ClassExpression) {
-                    classes.add((ClassExpression) expression);
-                }
-            }
-            if (!classes.isEmpty()) {
-                return classes;
-            }
-        }
-        throw new IllegalStateException("No value found in element");
     }
 
     protected List<Expression> findCollectionValueMember(AnnotationNode annotation, String memberName) {

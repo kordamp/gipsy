@@ -27,6 +27,7 @@ import org.codehaus.groovy.transform.GroovyASTTransformation;
 import org.kordamp.gipsy.transform.GipsyASTTransformation;
 import org.kordamp.jipsy.ServiceProviderFor;
 import org.kordamp.jipsy.processor.CheckResult;
+import org.kordamp.jipsy.processor.LogLocation;
 import org.kordamp.jipsy.processor.Persistence;
 import org.kordamp.jipsy.processor.service.Service;
 import org.kordamp.jipsy.processor.service.ServiceCollector;
@@ -70,6 +71,7 @@ public class ServiceProviderASTTransformation extends GipsyASTTransformation {
         for (String serviceName : persistence.tryFind()) {
             data.getService(serviceName);
         }
+        data.cache();
     }
 
     @Override
@@ -96,14 +98,26 @@ public class ServiceProviderASTTransformation extends GipsyASTTransformation {
 
     @Override
     protected void writeData() {
-        for (Service service : data.services()) {
-            try {
-                persistence.write(service.getName(), service.toProviderNamesList());
-            } catch (IOException e) {
-                // TODO print out error
+        if (data.isModified()) {
+            if (data.services().isEmpty()) {
+                logger.note(LogLocation.LOG_FILE, "Writing output");
+                try {
+                    persistence.delete();
+                } catch (IOException e) {
+                    logger.warning(LogLocation.LOG_FILE, "An error occurred while deleting data file");
+                }
+            } else {
+                logger.note(LogLocation.LOG_FILE, "Writing output");
+                for (Service service : data.services()) {
+                    try {
+                        persistence.write(service.getName(), service.toProviderNamesList());
+                    } catch (IOException e) {
+                        // TODO print out error
+                    }
+                }
+                persistence.writeLog();
             }
         }
-        persistence.writeLog();
     }
 
     private CheckResult checkCurrentClass(ClassNode currentClass) {
