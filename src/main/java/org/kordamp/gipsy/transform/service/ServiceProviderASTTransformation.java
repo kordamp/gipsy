@@ -71,7 +71,7 @@ public class ServiceProviderASTTransformation extends GipsyASTTransformation {
         for (String serviceName : persistence.tryFind()) {
             data.getService(serviceName);
         }
-        data.cache();
+        // data.cache();
     }
 
     @Override
@@ -98,7 +98,7 @@ public class ServiceProviderASTTransformation extends GipsyASTTransformation {
 
     @Override
     protected void writeData() {
-        if (data.isModified()) {
+        // if (data.isModified()) {
             if (data.services().isEmpty()) {
                 logger.note(LogLocation.LOG_FILE, "Writing output");
                 try {
@@ -117,7 +117,7 @@ public class ServiceProviderASTTransformation extends GipsyASTTransformation {
                 }
                 persistence.writeLog();
             }
-        }
+        // }
     }
 
     private CheckResult checkCurrentClass(ClassNode currentClass) {

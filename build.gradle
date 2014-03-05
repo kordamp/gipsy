@@ -14,12 +14,25 @@
  * limitations under the License.
  */
 
+buildscript {
+    repositories {
+        jcenter()
+    }
+
+    dependencies {
+        classpath 'net.saliman:gradle-cobertura-plugin:2.2.2'
+        classpath 'org.kt3k.gradle.plugin:coveralls-gradle-plugin:0.2.4'
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:0.3'
+    }
+}
+
 apply plugin: 'idea'
 apply plugin: 'java'
+apply plugin: 'cobertura'
+apply plugin: 'coveralls'
 apply plugin: 'build-dashboard'
 apply from: 'gradle/idea.gradle'
-apply from: 'gradle/coverage.gradle'
-apply from: 'gradle/codeQuality.gradle'
+apply from: 'gradle/code-quality.gradle'
 apply from: 'gradle/publish.gradle'
 
 repositories {
@@ -33,8 +46,20 @@ dependencies {
     testCompile 'junit:junit:4.11'
 }
 
+cobertura {
+    coverageFormats = ['html', 'xml']
+    coverageSourceDirs = sourceSets.main.java.srcDirs
+}
+
 task sourceJar(type: Jar) {
-    from sourceSets.main.allJava
+    group 'Build'
+    description 'An archive of the source code'
+    from sourceSets.main.allSource
+    classifier 'sources'
+}
+
+artifacts {
+    sourceJar
 }
 
 compileJava {

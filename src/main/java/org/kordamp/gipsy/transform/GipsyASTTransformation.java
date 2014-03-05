@@ -26,6 +26,7 @@ import org.kordamp.jipsy.processor.Options;
 import org.kordamp.jipsy.processor.ProcessorLogger;
 import org.kordamp.jipsy.processor.service.ServiceProviderProcessor;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -49,7 +50,18 @@ public abstract class GipsyASTTransformation extends AbstractASTTransformation {
             return;
         }
 
+        String mainClassName = moduleNode.getMainClassName();
+        PackageNode modulePackage = moduleNode.getPackage();
+        List<AnnotationNode> packageAnnotations = modulePackage != null ? modulePackage.getAnnotations() : new ArrayList<AnnotationNode>();
+
         for (ClassNode classNode : moduleNode.getClasses()) {
+            if (classNode.isDerivedFrom(ClassHelper.SCRIPT_TYPE) &&
+                mainClassName.equals(classNode.getName()) &&
+                !packageAnnotations.isEmpty()) {
+                process(classNode, packageAnnotations, moduleNode);
+                continue;
+            }
+
             List<AnnotationNode> annotations = classNode.getAnnotations(getAnnotationClassNode());
             if (annotations.isEmpty()) {
                 continue;
@@ -83,7 +95,7 @@ public abstract class GipsyASTTransformation extends AbstractASTTransformation {
     public static boolean hasNoArgsConstructor(ClassNode classNode) {
         for (ConstructorNode constructorNode : classNode.getDeclaredConstructors()) {
             Parameter[] parameters = constructorNode.getParameters();
-            if (parameters == null || parameters.length == 0) {
+            if (constructorNode.isPublic() && parameters == null || parameters.length == 0) {
                 return true;
             }
         }

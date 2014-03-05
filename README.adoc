@@ -1,10 +1,9 @@
 = Gipsy
 :author: Andres Almiray
-:version: 0.3.0
+:version: 0.4.0
 
-image::https://travis-ci.org/aalmiray/gipsy.png?branch=master["Build Status", link="https://travis-ci.org/aalmiray/gipsy"]
-
-image::https://d2weczhvl823v0.cloudfront.net/aalmiray/gipsy/trend.png["Bitdeli Badge", link="https://bitdeli.com/free"]
+image:https://travis-ci.org/aalmiray/gipsy.png?branch=master["Build Status", link="https://travis-ci.org/aalmiray/gipsy"]
+image:http://img.shields.io/:semver-{version}-blue.svg["Semantic Versioning", link="http://semver.org"]
 
 image::https://api.bintray.com/packages/aalmiray/kordamp/jipsy/images/download.png["Bintray", link="https://bintray.com/aalmiray/kordamp/gipsy/{version}"]
 
@@ -29,7 +28,6 @@ This library provides a mechanism for enforcing those rules by simply adding an 
 example say there exists the following `Calculator` service interface
 
 [source,groovy]
-[subs="verbatim,attributes"]
 ----
 package com.acme
 
@@ -41,7 +39,6 @@ interface Calculator {
 A basic implementation of such service may be as follows
 
 [source,groovy]
-[subs="verbatim,attributes"]
 ----
 package com.acme
 
@@ -112,3 +109,5 @@ consumers of your library.
 == Creating Your Own AST Transformations
 
 TBD
+
+image::https://d2weczhvl823v0.cloudfront.net/aalmiray/gipsy/trend.png["Bitdeli Badge", link="https://bitdeli.com/free"]

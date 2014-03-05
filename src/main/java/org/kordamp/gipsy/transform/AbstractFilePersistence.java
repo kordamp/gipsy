@@ -28,11 +28,31 @@ import java.net.URI;
  * @author Andres Almiray
  */
 public abstract class AbstractFilePersistence extends AbstractPersistence {
+    private static final String DEFAULT_TARGET_DIR = "org.kordamp.gipsy.DEFAULT_TARGET_DIR";
+
     protected final File outputDir;
 
     public AbstractFilePersistence(File outputDir, String name, Logger logger, String path) {
         super(name, logger, path);
-        this.outputDir = outputDir;
+        if (outputDir == null) {
+            String defaultPath = System.getProperty(DEFAULT_TARGET_DIR);
+            if (defaultPath != null && defaultPath.trim().length() > 0) {
+                try {
+                    this.outputDir = new File(defaultPath);
+                    this.outputDir.mkdirs();
+                } catch (Exception e) {
+                    throw new IllegalArgumentException(e);
+                }
+            } else {
+                try {
+                    this.outputDir = File.createTempFile(new File(path).getName(), "");
+                } catch (IOException e) {
+                    throw new IllegalArgumentException(e);
+                }
+            }
+        } else {
+            this.outputDir = outputDir;
+        }
     }
 
     @Override

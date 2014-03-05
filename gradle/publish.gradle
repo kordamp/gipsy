@@ -16,52 +16,14 @@
 
 import java.text.SimpleDateFormat
 
-apply plugin: 'maven-publish'
-
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            from components.java
-
-            pom.withXml {
-                asNode().with {
-                    appendNode('name', 'gipsy')
-                    appendNode('description',
-                        'Groovy version of the Jipsy Annotation Processor')
-                    appendNode('url', 'http://github.com/aalmiray/gipsy')
-                    appendNode('inceptionYear', '2013')
-                    appendNode('licenses')
-                        .appendNode('license')
-                        .appendNode('name', 'The Apache Software License, Version 2.0').parent()
-                        .appendNode('url', 'http://www.apache.org/licenses/LICENSE-2.0.txt').parent()
-                        .appendNode('distribution', 'repo')
-                    appendNode('scm')
-                        .appendNode('url', 'https://github.com/aalmiray/gipsy')
-                    Node developers = appendNode('developers')
-                    [
-                        aalmiray: 'Andres Almiray',
-                    ].each { devId, devName ->
-                        developers.appendNode('developer')
-                            .appendNode('id', devId).parent()
-                            .appendNode('name', devName).parent()
-                            .appendNode('roles')
-                            .appendNode('role', 'Developer')
-                    }
-                }
-            }
-
-            artifact sourceJar {
-                classifier "sources"
-            }
-        }
-    }
-}
-
 Date buildTimeAndDate = new Date()
 ext {
-    buildTime = new SimpleDateFormat('dd-MMM-yyyy').format(buildTimeAndDate)
-    buildDate = new SimpleDateFormat('hh:mm aa').format(buildTimeAndDate)
+    buildTime = new SimpleDateFormat('yyyy-MM-dd').format(buildTimeAndDate)
+    buildDate = new SimpleDateFormat('HH:mm:ss.SSSZ').format(buildTimeAndDate)
 }
+
+apply plugin: 'maven-publish'
+apply plugin: 'bintray'
 
 jar {
     manifest {
@@ -77,5 +39,67 @@ jar {
             'Implementation-Version': project.version,
             'Implementation-Vendor': 'Kordamp'
         )
+    }
+}
+
+def pomConfig = {
+    name project.name
+    description 'Groovy version of Jipsy, a configurable AST Transformation to simplify the use of the Service Provider Interface.'
+    url 'http://github.com/aalmiray/gipsy'
+    inceptionYear '2013'
+    licenses {
+        license([:]) {
+            name 'The Apache Software License, Version 2.0'
+            url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+            distribution 'repo'
+        }
+    }
+    scm {
+        url 'https://github.com/aalmiray/gipsy'
+    }
+    developers {
+        [
+            aalmiray: 'Andres Almiray',
+        ].each { devId, devName ->
+            developer {
+                id devId
+                name devName
+                roles {
+                    role 'Developer'
+                }
+            }
+        }
+    }
+}
+
+publishing {
+    publications {
+        mavenCustom(MavenPublication) {
+            from components.java
+            artifact sourceJar
+
+            pom.withXml {
+                asNode().children().last() + pomConfig
+            }
+        }
+    }
+}
+
+task install(dependsOn: publishToMavenLocal)
+
+if (!project.hasProperty('bintrayUsername')) ext.bintrayUsername = ''
+if (!project.hasProperty('bintrayApiKey')) ext.bintrayApiKey = ''
+
+bintray {
+    user = project.bintrayUsername
+    key = project.bintrayApiKey
+    publications = ['mavenCustom']
+    pkg {
+        repo = 'kordamp'
+        userOrg = 'aalmiray'
+        name = 'gipsy'
+        desc = 'Groovy version of Jipsy, a configurable AST Transformation to simplify the use of the Service Provider Interface.'
+        licenses = ['Apache-2.0']
+        labels = ['groovy', 'jipsy', 'gipsy', 'annotation', 'processor']
     }
 }
