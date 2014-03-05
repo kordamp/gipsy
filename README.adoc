@@ -66,7 +66,7 @@ Et voilà! There are no additional sources to be touched nor files to be created
 Gipsy requires the following dependencies
 
  - jipsy-{version}
- - groovy-all-2.2.1
+ - groovy-all-2.2.2
 
 Gipsy can be downloaded directly from https://bintray.com/aalmiray/kordamp/gipsy[Bintray] or configure it via Maven or Gradle.
 
