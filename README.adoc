@@ -1,6 +1,7 @@
-= Gipsy
 :author: Andres Almiray
 :version: 0.4.0
+
+image::media/gipsy-logo.png[]
 
 image:https://travis-ci.org/aalmiray/gipsy.png?branch=master["Build Status", link="https://travis-ci.org/aalmiray/gipsy"]
 image:http://img.shields.io/:semver-{version}-blue.svg["Semantic Versioning", link="http://semver.org"]
@@ -110,4 +111,3 @@ consumers of your library.
 
 TBD
 
-image::https://d2weczhvl823v0.cloudfront.net/aalmiray/gipsy/trend.png["Bitdeli Badge", link="https://bitdeli.com/free"]
