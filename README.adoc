@@ -1,12 +1,15 @@
+= Gipsy
 :author: Andres Almiray
 :version: 0.4.0
+:project-name: gipsy
 
 image::media/gipsy-logo.png[]
 
-image:https://travis-ci.org/aalmiray/gipsy.png?branch=master["Build Status", link="https://travis-ci.org/aalmiray/gipsy"]
+image:http://img.shields.io/travis/aalmiray/{project-name}/master.svg["Build Status", link="https://travis-ci.org/aalmiray/{project-name}"]
+image:http://img.shields.io/coveralls/aalmiray/{project-name}/master.svg["Coverage Status", link="https://coveralls.io/r/aalmiray/{project-name}"]
 image:http://img.shields.io/:semver-{version}-blue.svg["Semantic Versioning", link="http://semver.org"]
-
-image::https://api.bintray.com/packages/aalmiray/kordamp/jipsy/images/download.png["Bintray", link="https://bintray.com/aalmiray/kordamp/gipsy/{version}"]
+image:http://img.shields.io/badge/license-ASF2-blue.svg["Apache License 2", link="http://www.apache.org/licenses/LICENSE-2.0.txt"]
+image:http://img.shields.io/badge/download-latest-bb00bb.svg[link="https://bintray.com/griffon/aalmiray/{project-name}/_latestVersion"]
 
 Groovy version of https://github.com/aalmiray/jipsy[Jipsy], a configurable AST Transformation to simplify the use of
 the Service Provider Interface.
