@@ -17,21 +17,20 @@
 import java.text.SimpleDateFormat
 
 Date buildTimeAndDate = new Date()
-ext {
-    buildTime = new SimpleDateFormat('yyyy-MM-dd').format(buildTimeAndDate)
-    buildDate = new SimpleDateFormat('HH:mm:ss.SSSZ').format(buildTimeAndDate)
+ext {    buildDate = new SimpleDateFormat('yyyy-MM-dd').format(buildTimeAndDate)
+    buildTime = new SimpleDateFormat('HH:mm:ss.SSSZ').format(buildTimeAndDate)
 }
 
-apply plugin: 'maven-publish'
-apply plugin: 'bintray'
+apply plugin: 'maven-publish'apply plugin: 'com.jfrog.bintray'
 
 jar {
     manifest {
         attributes(
             'Built-By': System.properties['user.name'],
-            'Created-By': System.properties['java.version'] + " (" + System.properties['java.vendor'] + " " + System.getProperty("java.vm.version") + ")",
-            'Build-Date': buildTime,
-            'Build-Time': buildDate,
+            'Created-By': System.properties['java.version'] + ' (' + System.properties['java.vendor'] + ' ' + System.properties["java.vm.versio
+n"] + ')',
+            'Build-Date': project.buildDate,
+            'Build-Time': project.buildTime,
             'Specification-Title': project.name,
             'Specification-Version': project.version,
             'Specification-Vendor': 'Kordamp',
@@ -55,18 +54,19 @@ def pomConfig = {
         }
     }
     scm {
-        url 'https://github.com/aalmiray/gipsy'
+        connection 'scm:git:git@github.com:aalmiray/jipsy.git'
+        developerConnection 'scm:git:git@github.com:aalmiray/jipsy.git'
+        url 'git@github.com:aalmiray/jipsy.git'
     }
     developers {
-        [
-            aalmiray: 'Andres Almiray',
-        ].each { devId, devName ->
-            developer {
-                id devId
-                name devName
-                roles {
-                    role 'Developer'
-                }
+        developer {
+            id 'aalmiray'
+            name 'Andres Almiray'
+            email 'aalmiray@yahoo.com
+            organization 'Kordamp'
+            organizationUrl 'http://github.com/aalmiray'
+            roles {
+                role 'Developer'
             }
         }
     }
@@ -77,6 +77,7 @@ publishing {
         mavenCustom(MavenPublication) {
             from components.java
             artifact sourceJar
+            artifact javadocJar
 
             pom.withXml {
                 asNode().children().last() + pomConfig

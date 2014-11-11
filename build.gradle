@@ -20,20 +20,21 @@ buildscript {
     }
 
     dependencies {
-        classpath 'net.saliman:gradle-cobertura-plugin:2.2.2'
-        classpath 'org.kt3k.gradle.plugin:coveralls-gradle-plugin:0.2.4'
-        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:0.3'
+        classpath 'org.kt3k.gradle.plugin:coveralls-gradle-plugin:2.01'
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:0.6'
+        classpath 'com.github.ben-manes:gradle-versions-plugin:0.5'
     }
 }
 
 apply plugin: 'idea'
 apply plugin: 'java'
-apply plugin: 'cobertura'
-apply plugin: 'coveralls'
+apply plugin: 'jacoco'
 apply plugin: 'build-dashboard'
 apply from: 'gradle/idea.gradle'
 apply from: 'gradle/code-quality.gradle'
 apply from: 'gradle/publish.gradle'
+apply plugin: 'com.github.kt3k.coveralls'
+apply plugin: 'com.github.ben-manes.versions'
 
 repositories {
     jcenter()
@@ -46,9 +47,21 @@ dependencies {
     testCompile 'junit:junit:4.11'
 }
 
-cobertura {
-    coverageFormats = ['html', 'xml']
-    coverageSourceDirs = sourceSets.main.java.srcDirs
+jacoco {
+    toolVersion = '0.7.2.201409121644'
+}
+
+jacocoTestReport {
+    group = "Reporting"
+    description = "Generate Jacoco coverage reports after running tests."
+    additionalSourceDirs = project.files(sourceSets.main.allSource.srcDirs)
+    sourceDirectories = project.files(sourceSets.main.allSource.srcDirs)
+    classDirectories =  project.files(sourceSets.main.output)
+    reports {
+        xml.enabled = true
+        csv.enabled = false
+        html.enabled = true
+    }
 }
 
 task sourceJar(type: Jar) {
@@ -58,8 +71,16 @@ task sourceJar(type: Jar) {
     classifier 'sources'
 }
 
+task javadocJar(type: Jar) {
+    group 'Build'
+    description 'An archive of the javadoc'
+    from javadoc.output
+    classifier 'javadoc'
+}
+
 artifacts {
     sourceJar
+    javadocJar
 }
 
 compileJava {
