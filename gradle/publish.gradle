@@ -17,18 +17,19 @@
 import java.text.SimpleDateFormat
 
 Date buildTimeAndDate = new Date()
-ext {    buildDate = new SimpleDateFormat('yyyy-MM-dd').format(buildTimeAndDate)
+ext {   
+    buildDate = new SimpleDateFormat('yyyy-MM-dd').format(buildTimeAndDate)
     buildTime = new SimpleDateFormat('HH:mm:ss.SSSZ').format(buildTimeAndDate)
 }
 
-apply plugin: 'maven-publish'apply plugin: 'com.jfrog.bintray'
+apply plugin: 'maven-publish'
+apply plugin: 'com.jfrog.bintray'
 
 jar {
     manifest {
         attributes(
             'Built-By': System.properties['user.name'],
-            'Created-By': System.properties['java.version'] + ' (' + System.properties['java.vendor'] + ' ' + System.properties["java.vm.versio
-n"] + ')',
+            'Created-By': System.properties['java.version'] + ' (' + System.properties['java.vendor'] + ' ' + System.properties["java.vm.version"] + ')',
             'Build-Date': project.buildDate,
             'Build-Time': project.buildTime,
             'Specification-Title': project.name,
@@ -62,7 +63,7 @@ def pomConfig = {
         developer {
             id 'aalmiray'
             name 'Andres Almiray'
-            email 'aalmiray@yahoo.com
+            email 'aalmiray@yahoo.com'
             organization 'Kordamp'
             organizationUrl 'http://github.com/aalmiray'
             roles {
