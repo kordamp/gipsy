@@ -3,4 +3,3 @@ script: ./gradlew clean build
 jdk:
   - oraclejdk7
   - openjdk7
-  - openjdk6
