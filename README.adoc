@@ -10,6 +10,7 @@ image:http://img.shields.io/coveralls/aalmiray/{project-name}/master.svg["Covera
 image:http://img.shields.io/:semver-{version}-blue.svg["Semantic Versioning", link="http://semver.org"]
 image:http://img.shields.io/badge/license-ASF2-blue.svg["Apache License 2", link="http://www.apache.org/licenses/LICENSE-2.0.txt"]
 image:http://img.shields.io/badge/download-latest-bb00bb.svg[link="https://bintray.com/aalmiray/kordamp/{project-name}/_latestVersion"]
+image:https://img.shields.io/badge/donations-Patreon-orange.svg[link="https://www.patreon.com/user?u=6609318"]
 
 Groovy version of https://github.com/aalmiray/jipsy[Jipsy], a configurable AST Transformation to simplify the use of
 the Service Provider Interface.
@@ -70,7 +71,7 @@ Et voilà! There are no additional sources to be touched nor files to be created
 Gipsy requires the following dependencies
 
  - jipsy-{version}
- - groovy-all-2.2.2
+ - groovy-all-2.4.11
 
 Gipsy can be downloaded directly from https://bintray.com/aalmiray/kordamp/gipsy[Bintray] or configure it via Maven or Gradle.
 
@@ -88,27 +89,10 @@ Gipsy can be downloaded directly from https://bintray.com/aalmiray/kordamp/gipsy
 .Gradle
 [subs="verbatim,attributes"]
 ----
-configurations {
-    compileOnly
-}
 dependencies {
     compileOnly "org.kordamp.gipsy:gipsy:{version}"
 }
-sourceSets {
-    main {
-        compileClasspath += configurations.compileOnly
-    }
-}
-// if using the idea plugin
-idea {
-    module {
-        scopes.PROVIDED.plus += configurations.compileOnly
-    }
-}
 ----
-
-Use the `provided` scope in order to mark Gipsy as a compile-only dependency; this also avoids exposing Gipsy to
-consumers of your library.
 
 == Creating Your Own AST Transformations
 
