@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2014 the original author or authors.
+ * Copyright 2013-2017 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,6 +32,7 @@ jar {
             'Created-By': System.properties['java.version'] + ' (' + System.properties['java.vendor'] + ' ' + System.properties["java.vm.version"] + ')',
             'Build-Date': project.buildDate,
             'Build-Time': project.buildTime,
+            'Build-Revision': versioning.info.commit,
             'Specification-Title': project.name,
             'Specification-Version': project.version,
             'Specification-Vendor': 'Kordamp',
@@ -44,7 +45,6 @@ jar {
 
 def pomConfig = {
     name project.name
-    description 'Groovy version of Jipsy, a configurable AST Transformation to simplify the use of the Service Provider Interface.'
     url 'http://github.com/aalmiray/gipsy'
     inceptionYear '2013'
     licenses {
@@ -55,20 +55,12 @@ def pomConfig = {
         }
     }
     scm {
-        connection 'scm:git:git@github.com:aalmiray/jipsy.git'
-        developerConnection 'scm:git:git@github.com:aalmiray/jipsy.git'
-        url 'git@github.com:aalmiray/jipsy.git'
+        url 'https://github.com/aalmiray/jipsy.git'
     }
     developers {
         developer {
             id 'aalmiray'
             name 'Andres Almiray'
-            email 'aalmiray@yahoo.com'
-            organization 'Kordamp'
-            organizationUrl 'http://github.com/aalmiray'
-            roles {
-                role 'Developer'
-            }
         }
     }
 }
@@ -81,7 +73,13 @@ publishing {
             artifact javadocJar
 
             pom.withXml {
+                asNode().dependencies.dependency.each { dep ->
+                    if (dep.scope.text() == 'runtime') {
+                        dep.remove(dep.scope)
+                    }
+                }
                 asNode().children().last() + pomConfig
+                asNode().appendNode('description', 'Groovy version of Jipsy, a configurable AST Transformation to simplify the use of the Service Provider Interface.')
             }
         }
     }

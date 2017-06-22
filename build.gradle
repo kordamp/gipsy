@@ -1,5 +1,5 @@
 /*
- * Copyright 2013-2014 the original author or authors.
+ * Copyright 2013-2017 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,9 +20,12 @@ buildscript {
     }
 
     dependencies {
-        classpath 'org.kt3k.gradle.plugin:coveralls-gradle-plugin:2.4.0'
-        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.3.1'
-        classpath 'com.github.ben-manes:gradle-versions-plugin:0.11.3'
+        classpath 'org.kt3k.gradle.plugin:coveralls-gradle-plugin:2.8.1'
+        classpath 'nl.javadude.gradle.plugins:license-gradle-plugin:0.11.0'
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3'
+        classpath 'org.kordamp.gradle:stats-gradle-plugin:0.2.0'
+        classpath 'com.github.ben-manes:gradle-versions-plugin:0.15.0'
+        classpath 'net.nemerosa:versioning:2.6.0'
     }
 }
 
@@ -30,15 +33,28 @@ apply plugin: 'idea'
 apply plugin: 'java'
 apply plugin: 'jacoco'
 apply plugin: 'build-dashboard'
+apply plugin: 'com.github.kt3k.coveralls'
+apply plugin: 'com.github.ben-manes.versions'
+apply plugin: 'net.nemerosa.versioning'
 apply from: 'gradle/idea.gradle'
 apply from: 'gradle/code-quality.gradle'
 apply from: 'gradle/publish.gradle'
-apply plugin: 'com.github.kt3k.coveralls'
-apply plugin: 'com.github.ben-manes.versions'
 
 repositories {
     jcenter()
-    maven { url 'http://dl.bintray.com/content/aalmiray/kordamp' }
+}
+
+dependencyUpdates.resolutionStrategy = {
+    componentSelection { rules ->
+        rules.all { selection ->
+            boolean rejected = ['alpha', 'beta', 'rc', 'cr', 'pr'].any { qualifier ->
+                selection.candidate.version ==~ /(?i).*[.-]${qualifier}[.\d-]*/
+            }
+            if (rejected) {
+                selection.reject('Release candidate')
+            }
+        }
+    }
 }
 
 dependencies {
@@ -48,7 +64,7 @@ dependencies {
 }
 
 jacoco {
-    toolVersion = '0.7.4.201502262128'
+    toolVersion = '0.7.9'
 }
 
 jacocoTestReport {
@@ -86,7 +102,7 @@ javadoc {
     options.version     = true
     options.windowTitle = "$project.name $project.version"
     options.docTitle    = "$project.name $project.version"
-    options.footer      = "Copyright &copy; 2014-2015 Andres Almiray. All rights reserved."
+    options.footer      = "Copyright &copy; 2014-2017 Andres Almiray. All rights reserved."
     options.links       = ['http://www.slf4j.org/apidocs/',
                            'http://docs.oracle.com/javase/8/docs/api/',
                            'http://docs.groovy-lang.org/latest/html/api/',
@@ -102,4 +118,14 @@ compileJava {
     doFirst {
         options.compilerArgs = ['-proc:none']
     }
+}
+
+tasks.withType(JavaCompile) {
+    sourceCompatibility = project.sourceCompatibility
+    targetCompatibility = project.targetCompatibility
+}
+
+tasks.withType(GroovyCompile) {
+    sourceCompatibility = project.sourceCompatibility
+    targetCompatibility = project.targetCompatibility
 }
