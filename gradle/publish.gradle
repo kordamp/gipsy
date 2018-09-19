@@ -1,5 +1,5 @@
 /*
- * Copyright 2013-2017 the original author or authors.
+ * Copyright 2013-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,39 +29,19 @@ jar {
     manifest {
         attributes(
             'Built-By': System.properties['user.name'],
-            'Created-By': System.properties['java.version'] + ' (' + System.properties['java.vendor'] + ' ' + System.properties["java.vm.version"] + ')',
-            'Build-Date': project.buildDate,
-            'Build-Time': project.buildTime,
-            'Build-Revision': versioning.info.commit,
+            'Created-By': "Gradle ${gradle.gradleVersion}",
+            'x-Build-Jdk': System.properties['java.version'] + ' (' + System.properties['java.vendor'] + ' ' + System.properties["java.vm.version"] + ')',
+            'x-Build-Date': project.buildDate,
+            'x-Build-Time': project.buildTime,
+            'x-Build-Revision': versioning.info.commit,
             'Specification-Title': project.name,
             'Specification-Version': project.version,
             'Specification-Vendor': 'Kordamp',
             'Implementation-Title': project.name,
             'Implementation-Version': project.version,
-            'Implementation-Vendor': 'Kordamp'
+            'Implementation-Vendor': 'Kordamp',
+            'Automatic-Module-Name': 'org.kordamp.gipsy'
         )
-    }
-}
-
-def pomConfig = {
-    name project.name
-    url 'http://github.com/aalmiray/gipsy'
-    inceptionYear '2013'
-    licenses {
-        license([:]) {
-            name 'The Apache Software License, Version 2.0'
-            url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-            distribution 'repo'
-        }
-    }
-    scm {
-        url 'https://github.com/aalmiray/jipsy.git'
-    }
-    developers {
-        developer {
-            id 'aalmiray'
-            name 'Andres Almiray'
-        }
     }
 }
 
@@ -72,14 +52,27 @@ publishing {
             artifact sourceJar
             artifact javadocJar
 
-            pom.withXml {
-                asNode().dependencies.dependency.each { dep ->
-                    if (dep.scope.text() == 'runtime') {
-                        dep.remove(dep.scope)
+            pom {
+                name = project.name
+                description = 'Groovy version of Jipsy, a configurable AST Transformation to simplify the use of the Service Provider Interface.'
+                url = 'http://github.com/aalmiray/gipsy'
+                inceptionYear = '2013'
+                licenses {
+                    license {
+                        name = 'The Apache Software License, Version 2.0'
+                        url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                        distribution = 'repo'
                     }
                 }
-                asNode().children().last() + pomConfig
-                asNode().appendNode('description', 'Groovy version of Jipsy, a configurable AST Transformation to simplify the use of the Service Provider Interface.')
+                scm {
+                    url = 'https://github.com/aalmiray/jipsy.git'
+                }
+                developers {
+                    developer {
+                        id = 'aalmiray'
+                        name = 'Andres Almiray'
+                    }
+                }
             }
         }
     }
@@ -89,6 +82,8 @@ task install(dependsOn: publishToMavenLocal)
 
 if (!project.hasProperty('bintrayUsername')) ext.bintrayUsername = ''
 if (!project.hasProperty('bintrayApiKey')) ext.bintrayApiKey = ''
+if (!project.hasProperty('mavenUsername')) ext.mavenUsername = ''
+if (!project.hasProperty('mavenPassword')) ext.mavenPassword = ''
 
 bintray {
     user = project.bintrayUsername
@@ -101,5 +96,19 @@ bintray {
         desc = 'Groovy version of Jipsy, a configurable AST Transformation to simplify the use of the Service Provider Interface.'
         licenses = ['Apache-2.0']
         labels = ['groovy', 'jipsy', 'gipsy', 'annotation', 'processor']
+        websiteUrl = 'https://github.com/aalmiray/gipsy'
+        issueTrackerUrl = 'https://github.com/aalmiray/gipsy/issues'
+        vcsUrl = 'https://github.com/aalmiray/gipsy.git'
+        publicDownloadNumbers = true
+        githubRepo = 'aalmiray/gipsy'
+        version {
+            name = project.version
+            vcsTag = "${project.name}-${project.version}"
+            mavenCentralSync {
+                sync = true
+                user = project.mavenUsername
+                password = project.mavenPassword
+            }
+        }
     }
 }

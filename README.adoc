@@ -1,6 +1,6 @@
 = Gipsy
 :author: Andres Almiray
-:version: 0.4.1
+:version: 0.5.0
 :project-name: gipsy
 
 image::media/gipsy-logo.png[]
@@ -71,7 +71,7 @@ Et voilà! There are no additional sources to be touched nor files to be created
 Gipsy requires the following dependencies
 
  - jipsy-{version}
- - groovy-all-2.4.11
+ - groovy-all-2.5.2
 
 Gipsy can be downloaded directly from https://bintray.com/aalmiray/kordamp/gipsy[Bintray] or configure it via Maven or Gradle.
 

@@ -1,5 +1,5 @@
 /*
- * Copyright 2013-2017 the original author or authors.
+ * Copyright 2013-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,12 +20,12 @@ buildscript {
     }
 
     dependencies {
-        classpath 'org.kt3k.gradle.plugin:coveralls-gradle-plugin:2.8.1'
+        classpath 'org.kt3k.gradle.plugin:coveralls-gradle-plugin:2.8.2'
         classpath 'nl.javadude.gradle.plugins:license-gradle-plugin:0.11.0'
-        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3'
-        classpath 'org.kordamp.gradle:stats-gradle-plugin:0.2.0'
-        classpath 'com.github.ben-manes:gradle-versions-plugin:0.15.0'
-        classpath 'net.nemerosa:versioning:2.6.0'
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.4'
+        classpath 'org.kordamp.gradle:stats-gradle-plugin:0.2.2'
+        classpath 'com.github.ben-manes:gradle-versions-plugin:0.20.0'
+        classpath 'net.nemerosa:versioning:2.7.1'
     }
 }
 
@@ -64,7 +64,7 @@ dependencies {
 }
 
 jacoco {
-    toolVersion = '0.7.9'
+    toolVersion = '0.8.2'
 }
 
 jacocoTestReport {
@@ -102,7 +102,7 @@ javadoc {
     options.version     = true
     options.windowTitle = "$project.name $project.version"
     options.docTitle    = "$project.name $project.version"
-    options.footer      = "Copyright &copy; 2014-2017 Andres Almiray. All rights reserved."
+    options.footer      = "Copyright &copy; 2014-2018 Andres Almiray. All rights reserved."
     options.links       = ['http://www.slf4j.org/apidocs/',
                            'http://docs.oracle.com/javase/8/docs/api/',
                            'http://docs.groovy-lang.org/latest/html/api/',
