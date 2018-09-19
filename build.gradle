@@ -59,7 +59,8 @@ dependencyUpdates.resolutionStrategy = {
 
 dependencies {
     compile "org.kordamp.jipsy:jipsy:${project.version}"
-    compile "org.codehaus.groovy:groovy-all:${groovyVersion}"
+    compileOnly "org.codehaus.groovy:groovy-all:${groovyVersion}"
+    testCompile "org.codehaus.groovy:groovy-all:${groovyVersion}"
     testCompile 'junit:junit:4.12'
 }
 
