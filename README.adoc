@@ -6,7 +6,6 @@
 image::media/gipsy-logo.png[]
 
 image:https://img.shields.io/travis/aalmiray/{project-name}/master.svg?logo=travis["Build Status", link="https://travis-ci.org/aalmiray/{project-name}"]
-image:https://img.shields.io/coveralls/aalmiray/{project-name}/master.svg["Coverage Status", link="https://coveralls.io/r/aalmiray/{project-name}"]
 image:https://img.shields.io/:semver-{version}-blue.svg["Semantic Versioning", link="http://semver.org"]
 image:https://img.shields.io/badge/license-ASF2-blue.svg?logo=apache["Apache License 2", link="http://www.apache.org/licenses/LICENSE-2.0.txt"]
 image:https://img.shields.io/maven-central/v/org.kordamp.gipsy/{project-name}.svg[Download, link="https://search.maven.org/#search|ga|1|{project-name}"]
@@ -72,7 +71,7 @@ Et voilà! There are no additional sources to be touched nor files to be created
 Gipsy requires the following dependencies
 
  - jipsy-{version}
- - groovy-all-2.5.2
+ - groovy-all-2.5.6
 
 Gipsy can be downloaded directly from https://bintray.com/aalmiray/kordamp/gipsy[Bintray] or configure it via Maven or Gradle.
 

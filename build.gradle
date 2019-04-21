@@ -20,7 +20,6 @@ plugins {
     id 'java'
     id 'org.kordamp.gradle.kordamp-parentpom' version '1.5.0'
     id 'org.kordamp.gradle.build-scan'        version '0.18.0'
-    id 'com.github.kt3k.coveralls'            version '2.8.2'
 }
 
 buildScan {
