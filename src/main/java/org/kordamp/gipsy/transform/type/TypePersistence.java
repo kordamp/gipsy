@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kordamp.gipsy.transform.service;
+package org.kordamp.gipsy.transform.type;
 
 import org.kordamp.gipsy.transform.AbstractFilePersistence;
 import org.kordamp.jipsy.processor.Logger;
@@ -27,9 +27,9 @@ import java.io.FileFilter;
 /**
  * @author Andres Almiray
  */
-public class ServicePersistence extends AbstractFilePersistence {
-    public ServicePersistence(String name, String root, File outputDir, Logger logger) {
-        super(outputDir, name, logger, root + "/META-INF/services/");
+public class TypePersistence extends AbstractFilePersistence {
+    public TypePersistence(String name, String root, File outputDir, Logger logger) {
+        super(outputDir, name, logger, root + "/META-INF/types/");
     }
 
     @Override

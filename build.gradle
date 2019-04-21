@@ -1,11 +1,13 @@
 /*
- * Copyright 2013-2018 the original author or authors.
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright 2013-2019 Andres Almiray.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -14,34 +16,66 @@
  * limitations under the License.
  */
 
-buildscript {
-    repositories {
-        jcenter()
+plugins {
+    id 'java'
+    id 'org.kordamp.gradle.kordamp-parentpom' version '1.5.0'
+    id 'org.kordamp.gradle.build-scan'        version '0.18.0'
+    id 'com.github.kt3k.coveralls'            version '2.8.2'
+}
+
+buildScan {
+    termsOfServiceAgree = 'yes'
+}
+
+config {
+    info {
+        name          = 'Gipsy'
+        description   = 'Groovy version of Jipsy, a configurable AST Transformation to simplify the use of the Service Provider Interface.'
+        inceptionYear = '2013'
+        tags          = ['groovy', 'jipsy', 'gipsy', 'annotation', 'processor']
+
+        specification  { enabled = false }
     }
 
-    dependencies {
-        classpath 'org.kt3k.gradle.plugin:coveralls-gradle-plugin:2.8.2'
-        classpath 'nl.javadude.gradle.plugins:license-gradle-plugin:0.11.0'
-        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.4'
-        classpath 'org.kordamp.gradle:stats-gradle-plugin:0.2.2'
-        classpath 'com.github.ben-manes:gradle-versions-plugin:0.20.0'
-        classpath 'net.nemerosa:versioning:2.7.1'
+    javadoc {
+        autoLinks {
+            enabled = false
+        }
+        options {
+            links 'https://raw.githubusercontent.com/aalmiray/jipsy/gh-pages/apidocs/'
+        }
     }
 }
 
-apply plugin: 'idea'
-apply plugin: 'java'
-apply plugin: 'jacoco'
-apply plugin: 'build-dashboard'
-apply plugin: 'com.github.kt3k.coveralls'
-apply plugin: 'com.github.ben-manes.versions'
-apply plugin: 'net.nemerosa.versioning'
-apply from: 'gradle/idea.gradle'
-apply from: 'gradle/code-quality.gradle'
-apply from: 'gradle/publish.gradle'
+allprojects {
+    apply plugin: 'idea'
 
-repositories {
-    jcenter()
+    dependencyUpdates.resolutionStrategy = {
+        componentSelection { rules ->
+            rules.all { selection ->
+                boolean rejected = ['alpha', 'beta', 'rc', 'cr', 'm'].any { qualifier ->
+                    selection.candidate.version ==~ /(?i).*[.-]${qualifier}[.\d-]*/
+                }
+                if (rejected) {
+                    selection.reject('Release candidate')
+                }
+            }
+        }
+    }
+}
+
+idea {
+    project {
+        jdkName '1.8'
+        languageLevel '1.8'
+
+        ipr {
+            withXml { provider ->
+                def node = provider.asNode()
+                node.component.find { it.'@name' == 'VcsDirectoryMappings' }?.mapping[0].'@vcs' = 'Git'
+            }
+        }
+    }
 }
 
 dependencyUpdates.resolutionStrategy = {
@@ -57,62 +91,13 @@ dependencyUpdates.resolutionStrategy = {
     }
 }
 
+repositories { mavenLocal() }
+
 dependencies {
     compile "org.kordamp.jipsy:jipsy:${project.version}"
-    compileOnly "org.codehaus.groovy:groovy-all:${groovyVersion}"
-    testCompile "org.codehaus.groovy:groovy-all:${groovyVersion}"
+    compileOnly "org.codehaus.groovy:groovy:${groovyVersion}"
+    testCompile "org.codehaus.groovy:groovy:${groovyVersion}"
     testCompile 'junit:junit:4.12'
-}
-
-jacoco {
-    toolVersion = '0.8.2'
-}
-
-jacocoTestReport {
-    group = "Reporting"
-    description = "Generate Jacoco coverage reports after running tests."
-    additionalSourceDirs = project.files(sourceSets.main.allSource.srcDirs)
-    sourceDirectories = project.files(sourceSets.main.allSource.srcDirs)
-    classDirectories =  project.files(sourceSets.main.output)
-    reports {
-        xml.enabled = true
-        csv.enabled = false
-        html.enabled = true
-    }
-}
-
-task sourceJar(type: Jar) {
-    group 'Build'
-    description 'An archive of the source code'
-    from sourceSets.main.allSource
-    classifier 'sources'
-}
-
-task javadocJar(type: Jar) {
-    group 'Build'
-    description 'An archive of the javadoc'
-    from javadoc.outputs
-    classifier 'javadoc'
-}
-
-javadoc {
-    options.use         = true
-    options.splitIndex  = true
-    options.encoding    = 'UTF-8'
-    options.author      = true
-    options.version     = true
-    options.windowTitle = "$project.name $project.version"
-    options.docTitle    = "$project.name $project.version"
-    options.footer      = "Copyright &copy; 2014-2018 Andres Almiray. All rights reserved."
-    options.links       = ['http://www.slf4j.org/apidocs/',
-                           'http://docs.oracle.com/javase/8/docs/api/',
-                           'http://docs.groovy-lang.org/latest/html/api/',
-                           'https://raw.githubusercontent.com/aalmiray/jipsy/gh-pages/apidocs/']
-}
-
-artifacts {
-    sourceJar
-    javadocJar
 }
 
 compileJava {
@@ -121,12 +106,8 @@ compileJava {
     }
 }
 
-tasks.withType(JavaCompile) {
-    sourceCompatibility = project.sourceCompatibility
-    targetCompatibility = project.targetCompatibility
-}
-
-tasks.withType(GroovyCompile) {
-    sourceCompatibility = project.sourceCompatibility
-    targetCompatibility = project.targetCompatibility
+jar {
+    manifest {
+        attributes('Automatic-Module-Name': 'org.kordamp.gipsy')
+    }
 }
