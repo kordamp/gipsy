@@ -1,6 +1,6 @@
 language: java
 install: true
-jdk: oraclejdk8
+jdk: openjdk8
 before_cache:
   - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
 cache:
@@ -12,4 +12,4 @@ before_script:
   - ./gradlew --version
 
 script:
-  - TERM=dumb ./gradlew --console=plain -S --scan build
+  - TERM=dumb ./gradlew -S build

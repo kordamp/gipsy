@@ -1,7 +1,7 @@
 /*
  * SPDX-License-Identifier: Apache-2.0
  *
- * Copyright 2013-2019 Andres Almiray.
+ * Copyright 2013-2019 Andres Almiray
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,15 +15,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 plugins {
     id 'java'
-    id 'org.kordamp.gradle.kordamp-parentpom' version '1.5.0'
-    id 'org.kordamp.gradle.build-scan'        version '0.18.0'
-}
-
-buildScan {
-    termsOfServiceAgree = 'yes'
+    id 'org.kordamp.gradle.kordamp-parentpom' version '1.9.1'
 }
 
 config {
@@ -48,19 +42,6 @@ config {
 
 allprojects {
     apply plugin: 'idea'
-
-    dependencyUpdates.resolutionStrategy = {
-        componentSelection { rules ->
-            rules.all { selection ->
-                boolean rejected = ['alpha', 'beta', 'rc', 'cr', 'm'].any { qualifier ->
-                    selection.candidate.version ==~ /(?i).*[.-]${qualifier}[.\d-]*/
-                }
-                if (rejected) {
-                    selection.reject('Release candidate')
-                }
-            }
-        }
-    }
 }
 
 idea {
@@ -76,21 +57,6 @@ idea {
         }
     }
 }
-
-dependencyUpdates.resolutionStrategy = {
-    componentSelection { rules ->
-        rules.all { selection ->
-            boolean rejected = ['alpha', 'beta', 'rc', 'cr', 'pr'].any { qualifier ->
-                selection.candidate.version ==~ /(?i).*[.-]${qualifier}[.\d-]*/
-            }
-            if (rejected) {
-                selection.reject('Release candidate')
-            }
-        }
-    }
-}
-
-repositories { mavenLocal() }
 
 dependencies {
     compile "org.kordamp.jipsy:jipsy:${project.version}"
