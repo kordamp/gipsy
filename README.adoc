@@ -1,23 +1,28 @@
 = Gipsy
 :author: Andres Almiray
-:version: 0.6.0
-:project-name: gipsy
+:linkattrs:
+:project-owner:   kordamp
+:project-repo:    maven
+:project-name:    gipsy
+:project-group:   org.kordamp.gipsy
+:project-version: 0.6.0
 
 image::media/gipsy-logo.png[]
 
-image:https://img.shields.io/travis/aalmiray/{project-name}/master.svg?logo=travis["Build Status", link="https://travis-ci.org/aalmiray/{project-name}"]
-image:https://img.shields.io/:semver-{version}-blue.svg["Semantic Versioning", link="http://semver.org"]
-image:https://img.shields.io/badge/license-ASF2-blue.svg?logo=apache["Apache License 2", link="http://www.apache.org/licenses/LICENSE-2.0.txt"]
-image:https://img.shields.io/maven-central/v/org.kordamp.gipsy/{project-name}.svg[Download, link="https://search.maven.org/#search|ga|1|{project-name}"]
-image:https://api.bintray.com/packages/aalmiray/kordamp/{project-name}/images/download.svg[Download, link="https://bintray.com/aalmiray/kordmap/{project-name}"]
-image:https://img.shields.io/badge/donations-Patreon-f96854.svg?logo=patreon[link="https://www.patreon.com/user?u=6609318"]
+image:http://img.shields.io/travis/{project-owner}/{project-name}/master.svg["Build Status (travis)", link="https://travis-ci.org/{project-owner}/{project-name}"]
+image:http://img.shields.io/badge/license-ASL2-blue.svg["ASL2 Licensed", link="http://opensource.org/licenses/ASL2"]
+image:https://api.bintray.com/packages/{project-owner}/{project-repo}/{project-name}/images/download.svg[link="https://bintray.com/{project-owner}/{project-repo}/{project-name}/_latestVersion"]
+image:https://img.shields.io/maven-central/v/{project-group}/{project-name}.svg[Download, link="https://search.maven.org/#search|ga|1|{project-name}"]
+image:https://img.shields.io/badge/donations-Patreon-orange.svg[link="https://www.patreon.com/user?u=6609318"]
 
-Groovy version of https://github.com/aalmiray/jipsy[Jipsy], a configurable AST Transformation to simplify the use of
+---
+
+Groovy version of https://github.com/kordamp/jipsy[Jipsy], a configurable AST Transformation to simplify the use of
 the Service Provider Interface.
 
 == Introduction
 
-Gipsy delivers the same functionality that https://github.com/aalmiray/jipsy[Jipsy] does but uses Groovy's AST Transformations
+Gipsy delivers the same functionality that https://github.com/kordamp/jipsy[Jipsy] does but uses Groovy's AST Transformations
 instead of JDK6' Annotation Processor.
 
 As explained at the http://docs.oracle.com/javase/6/docs/api/java/util/ServiceLoader.html[service loader documentation],
@@ -73,16 +78,16 @@ Gipsy requires the following dependencies
  - jipsy-{version}
  - groovy-all-2.5.6
 
-Gipsy can be downloaded directly from https://bintray.com/aalmiray/kordamp/gipsy[Bintray] or configure it via Maven or Gradle.
+Gipsy can be downloaded directly from https://bintray.com/kordamp/kordamp/gipsy[Bintray] or configure it via Maven or Gradle.
 
 .Maven
 [subs="verbatim,attributes"]
 ----
 <dependency>
-  <groupId>org.kordamp.gipsy</groupId>
-  <artifactId>gipsy</artifactId>
-  <version>{version}</version>
-  <scope>provided</scope>
+    <groupId>{project-group}</groupId>
+    <artifactId>{project-name}</artifactId>
+    <version>{project-version}</version>
+    <scope>provided</scope>
 </dependency>
 ----
 
@@ -90,7 +95,8 @@ Gipsy can be downloaded directly from https://bintray.com/aalmiray/kordamp/gipsy
 [subs="verbatim,attributes"]
 ----
 dependencies {
-    compileOnly "org.kordamp.gipsy:gipsy:{version}"
+    annotationProcessor '{project-group}:{project-name}:{version}'
+    compileOnly '{project-group}:{project-name}:{version}'
 }
 ----
 
