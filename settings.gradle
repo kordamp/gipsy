@@ -21,9 +21,18 @@ pluginManagement {
         gradlePluginPortal()
         mavenLocal()
     }
-    plugins {
-        id 'org.kordamp.gradle.kordamp-parentpom' version kordampPomVersion
+}
+
+buildscript {
+    repositories {
+        gradlePluginPortal()
+        jcenter()
+        mavenLocal()
+    }
+    dependencies {
+        classpath "org.kordamp.gradle:kordamp-parentbuild:$kordampBuildVersion"
     }
 }
+apply plugin: 'org.kordamp.gradle.kordamp-parentbuild'
 
 rootProject.name = 'gipsy'

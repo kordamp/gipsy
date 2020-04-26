@@ -17,7 +17,6 @@
  */
 plugins {
     id 'java-library'
-    id 'org.kordamp.gradle.kordamp-parentpom'
 }
 
 config {
@@ -64,7 +63,7 @@ dependencies {
     api "org.kordamp.jipsy:jipsy:${project.version}"
     compileOnly "org.codehaus.groovy:groovy:${groovyVersion}"
     testImplementation "org.codehaus.groovy:groovy:${groovyVersion}"
-    testImplementation 'junit:junit:4.12'
+    testImplementation 'junit:junit:4.13'
 }
 
 compileJava {
