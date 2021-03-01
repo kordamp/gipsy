@@ -1,7 +1,7 @@
 /*
  * SPDX-License-Identifier: Apache-2.0
  *
- * Copyright 2013-2020 Andres Almiray
+ * Copyright 2013-2021 Andres Almiray
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,7 +26,7 @@ import org.codehaus.groovy.control.CompilePhase;
 import org.codehaus.groovy.transform.ASTTransformation;
 import org.codehaus.groovy.transform.GroovyASTTransformation;
 import org.kordamp.gipsy.transform.GipsyASTTransformation;
-import org.kordamp.jipsy.ServiceProviderFor;
+import org.kordamp.jipsy.annotations.ServiceProviderFor;
 import org.kordamp.jipsy.processor.CheckResult;
 import org.kordamp.jipsy.processor.LogLocation;
 import org.kordamp.jipsy.processor.Persistence;
@@ -100,24 +100,24 @@ public class ServiceProviderASTTransformation extends GipsyASTTransformation {
     @Override
     protected void writeData() {
         // if (data.isModified()) {
-            if (data.services().isEmpty()) {
-                logger.note(LogLocation.LOG_FILE, "Writing output");
-                try {
-                    persistence.delete();
-                } catch (IOException e) {
-                    logger.warning(LogLocation.LOG_FILE, "An error occurred while deleting data file");
-                }
-            } else {
-                logger.note(LogLocation.LOG_FILE, "Writing output");
-                for (Service service : data.services()) {
-                    try {
-                        persistence.write(service.getName(), service.toProviderNamesList());
-                    } catch (IOException e) {
-                        // TODO print out error
-                    }
-                }
-                persistence.writeLog();
+        if (data.services().isEmpty()) {
+            logger.note(LogLocation.LOG_FILE, "Writing output");
+            try {
+                persistence.delete();
+            } catch (IOException e) {
+                logger.warning(LogLocation.LOG_FILE, "An error occurred while deleting data file");
             }
+        } else {
+            logger.note(LogLocation.LOG_FILE, "Writing output");
+            for (Service service : data.services()) {
+                try {
+                    persistence.write(service.getName(), service.toProviderNamesList());
+                } catch (IOException e) {
+                    // TODO print out error
+                }
+            }
+            persistence.writeLog();
+        }
         // }
     }
 

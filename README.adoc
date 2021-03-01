@@ -2,19 +2,14 @@
 :author: Andres Almiray
 :linkattrs:
 :project-owner:   kordamp
-:project-repo:    maven
 :project-name:    gipsy
 :project-group:   org.kordamp.gipsy
-:project-version: 0.6.0
+:project-version: 1.0.0
 
 image::media/gipsy-logo.png[]
 
-image:http://img.shields.io/travis/{project-owner}/{project-name}/master.svg["Build Status (travis)", link="https://travis-ci.org/{project-owner}/{project-name}"]
 image:https://github.com/{project-owner}/{project-name}/workflows/Build/badge.svg["Build Status", link="https://github.com/{project-owner}/{project-name}/actions"]
-image:http://img.shields.io/badge/license-ASL2-blue.svg["ASL2 Licensed", link="http://opensource.org/licenses/ASL2"]
-image:https://api.bintray.com/packages/{project-owner}/{project-repo}/{project-name}/images/download.svg[link="https://bintray.com/{project-owner}/{project-repo}/{project-name}/_latestVersion"]
-image:https://img.shields.io/maven-central/v/{project-group}/{project-name}.svg[Download, link="https://search.maven.org/#search|ga|1|{project-name}"]
-image:https://img.shields.io/badge/donations-Patreon-orange.svg[link="https://www.patreon.com/user?u=6609318"]
+image:https://img.shields.io/maven-central/v/{project-group}/{project-name}.svg[Download, link="https://search.maven.org/#search|ga|1|g:{project-group}"]
 
 ---
 
@@ -53,7 +48,7 @@ A basic implementation of such service may be as follows
 ----
 package com.acme
 
-@org.kordamp.jipsy.ServiceProviderFor(Calculator)
+@org.kordamp.jipsy.annotations.ServiceProviderFor(Calculator)
 class BasicCalculator implements Calculator {
     double add(double a, double b) { a + b }
 }
@@ -76,8 +71,8 @@ Et voilà! There are no additional sources to be touched nor files to be created
 
 Gipsy requires the following dependencies
 
- - jipsy-{version}
- - groovy-all-2.5.6
+ - jipsy-processor-{version}
+ - groovy-all-3.0.7
 
 Gipsy can be downloaded directly from https://bintray.com/kordamp/kordamp/gipsy[Bintray] or configure it via Maven or Gradle.
 
@@ -97,7 +92,7 @@ Gipsy can be downloaded directly from https://bintray.com/kordamp/kordamp/gipsy[
 ----
 dependencies {
     annotationProcessor '{project-group}:{project-name}:{version}'
-    compileOnly '{project-group}:{project-name}:{version}'
+    compileOnly 'org.kordamp.jipsy:jipsy-annotations:{version}'
 }
 ----
 

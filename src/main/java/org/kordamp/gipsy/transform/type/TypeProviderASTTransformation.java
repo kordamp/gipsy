@@ -1,7 +1,7 @@
 /*
  * SPDX-License-Identifier: Apache-2.0
  *
- * Copyright 2013-2020 Andres Almiray
+ * Copyright 2013-2021 Andres Almiray
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,8 +26,8 @@ import org.codehaus.groovy.control.CompilePhase;
 import org.codehaus.groovy.transform.ASTTransformation;
 import org.codehaus.groovy.transform.GroovyASTTransformation;
 import org.kordamp.gipsy.transform.GipsyASTTransformation;
-import org.kordamp.jipsy.ServiceProviderFor;
-import org.kordamp.jipsy.TypeProviderFor;
+import org.kordamp.jipsy.annotations.ServiceProviderFor;
+import org.kordamp.jipsy.annotations.TypeProviderFor;
 import org.kordamp.jipsy.processor.CheckResult;
 import org.kordamp.jipsy.processor.LogLocation;
 import org.kordamp.jipsy.processor.Persistence;
