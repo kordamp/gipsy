@@ -5,7 +5,7 @@
 :project-name:       gipsy
 :project-groupId:    org.kordamp.gipsy
 :project-artifactId: gipsy
-:project-version: 1.1.1
+:project-version: 1.2.0
 
 ifdef::env-github[]
 :tip-caption: :bulb:
