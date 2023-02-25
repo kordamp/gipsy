@@ -1,0 +1,86 @@
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+# Copyright 2013 - 2022 Andres Almiray.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+project:
+  name: jipsy
+  description: Configurable Java Annotation Processor
+  longDescription: |
+    Groovy version of Jipsy, a configurable AST Transformation to simplify the use of the Service Provider Interface
+  links:
+    homepage: https://kordamp.org/gipsy
+  authors:
+    - Andres Almiray
+  license: Apache-2.0
+  java:
+    groupId: org.kordamp.gipsy
+    version: 8
+  inceptionYear: 2013
+
+release:
+  github:
+    branch: master
+    overwrite: true
+    sign: true
+    issues:
+      enabled: true
+    changelog:
+      formatted: ALWAYS
+      preset: conventional-commits
+      contributors:
+        format: '- {{contributorName}}{{#contributorUsernameAsLink}} ({{.}}){{/contributorUsernameAsLink}}'
+      labelers:
+        - label: 'dependencies'
+          title: 'regex:^(?:deps(?:\(.*\))?!?):\s.*'
+          order: 120
+      categories:
+        - title: '⚙️  Dependencies'
+          key: 'dependencies'
+          order: 70
+          labels:
+            - 'dependencies'
+      hide:
+        categories:
+          - 'merge'
+        contributors:
+          - 'GitHub'
+      replacers:
+        - search: 'deps: '
+
+signing:
+  active: always
+  armored: true
+
+deploy:
+  maven:
+    nexus2:
+      maven-central:
+        active: RELEASE
+        url: https://s01.oss.sonatype.org/service/local
+        closeRepository: true
+        releaseRepository: true
+        stagingRepositories:
+          - build/repos/local/release
+
+announce:
+  twitter:
+    active: RELEASE
+    status: 🚀 {{projectName}} {{projectVersion}} has been released! {{releaseNotesUrl}}
+  mastodon:
+    active: RELEASE
+    host: https://mastodon.social
+    status: 🚀 {{projectName}} {{projectVersion}} has been released! {{releaseNotesUrl}}

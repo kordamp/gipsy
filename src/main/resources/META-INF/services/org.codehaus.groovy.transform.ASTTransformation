@@ -1,2 +1,3 @@
 org.kordamp.gipsy.transform.service.ServiceProviderASTTransformation
+org.kordamp.gipsy.transform.sisu.SisuIndexProviderASTTransformation
 org.kordamp.gipsy.transform.type.TypeProviderASTTransformation

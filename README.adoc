@@ -1,15 +1,24 @@
 = Gipsy
 :author: Andres Almiray
 :linkattrs:
-:project-owner:   kordamp
-:project-name:    gipsy
-:project-group:   org.kordamp.gipsy
+:project-owner:      kordamp
+:project-name:       gipsy
+:project-groupId:    org.kordamp.gipsy
+:project-artifactId: gipsy
 :project-version: 1.1.1
+
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+endif::[]
 
 image::media/gipsy-logo.png[]
 
-image:https://github.com/{project-owner}/{project-name}/workflows/Build/badge.svg["Build Status", link="https://github.com/{project-owner}/{project-name}/actions"]
-image:https://img.shields.io/maven-central/v/{project-group}/{project-name}.svg[Download, link="https://search.maven.org/#search|ga|1|g:{project-group}"]
+image:http://img.shields.io/github/actions/workflow/status/{project-owner}/{project-name}/early-access.yml?branch=master&logo=github&label=Build["Build Status", link="https://github.com/{project-owner}/{project-name}/actions"]
+image:https://img.shields.io/maven-central/v/{project-groupId}/{project-artifactId}.svg[Download, link="https://search.maven.org/#search|ga|1|g:{project-groupId} AND a:{project-artifactId}"]
 
 ---
 
@@ -75,22 +84,22 @@ Gipsy requires the following dependencies
 
 Gipsy can be downloaded directly from Maven Central, configure it via Maven or Gradle.
 
-.Maven
+**Maven**
 [subs="verbatim,attributes"]
 ----
 <dependency>
-    <groupId>{project-group}</groupId>
+    <groupId>{project-groupId}</groupId>
     <artifactId>{project-name}</artifactId>
     <version>{project-version}</version>
     <scope>provided</scope>
 </dependency>
 ----
 
-.Gradle
+**Gradle**
 [subs="verbatim,attributes"]
 ----
 dependencies {
-    annotationProcessor '{project-group}:{project-name}:{project-version}'
+    annotationProcessor '{project-groupId}:{project-name}:{project-version}'
     compileOnly 'org.kordamp.jipsy:jipsy-annotations:{project-version}'
 }
 ----

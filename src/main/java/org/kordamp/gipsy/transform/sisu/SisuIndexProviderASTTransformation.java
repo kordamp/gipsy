@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kordamp.gipsy.transform.service;
+package org.kordamp.gipsy.transform.sisu;
 
 import org.codehaus.groovy.ast.AnnotationNode;
 import org.codehaus.groovy.ast.ClassNode;
@@ -27,11 +27,12 @@ import org.codehaus.groovy.transform.ASTTransformation;
 import org.codehaus.groovy.transform.GroovyASTTransformation;
 import org.kordamp.gipsy.transform.GipsyASTTransformation;
 import org.kordamp.jipsy.annotations.ServiceProviderFor;
+import org.kordamp.jipsy.annotations.SisuIndexFor;
 import org.kordamp.jipsy.processor.CheckResult;
 import org.kordamp.jipsy.processor.LogLocation;
 import org.kordamp.jipsy.processor.Persistence;
-import org.kordamp.jipsy.processor.service.Service;
-import org.kordamp.jipsy.processor.service.ServiceCollector;
+import org.kordamp.jipsy.processor.type.Type;
+import org.kordamp.jipsy.processor.type.TypeCollector;
 
 import java.io.File;
 import java.io.IOException;
@@ -46,14 +47,15 @@ import static java.lang.reflect.Modifier.isStatic;
  */
 @ServiceProviderFor(ASTTransformation.class)
 @GroovyASTTransformation(phase = CompilePhase.CLASS_GENERATION)
-public class ServiceProviderASTTransformation extends GipsyASTTransformation {
-    public static final String NAME = ServiceProviderASTTransformation.class.getName()
-        + " (" + ServiceProviderASTTransformation.class.getPackage().getImplementationVersion() + ")";
+public class SisuIndexProviderASTTransformation extends GipsyASTTransformation {
+    public static final String NAME = SisuIndexProviderASTTransformation.class.getName()
+        + " (" + SisuIndexProviderASTTransformation.class.getPackage().getImplementationVersion() + ")";
 
-    private static final ClassNode SERVICE_PROVIDER_FOR_TYPE = makeClassSafe(ServiceProviderFor.class);
+    private static final ClassNode SERVICE_PROVIDER_FOR_TYPE = makeClassSafe(SisuIndexFor.class);
+
 
     private Persistence persistence;
-    private ServiceCollector data;
+    private TypeCollector data;
 
     @Override
     protected ClassNode getAnnotationClassNode() {
@@ -65,14 +67,14 @@ public class ServiceProviderASTTransformation extends GipsyASTTransformation {
         super.initialize(moduleNode);
 
         File outputDir = moduleNode.getContext().getConfiguration().getTargetDirectory();
-        persistence = new ServicePersistence(NAME, options.dir(), outputDir, logger);
-        data = new ServiceCollector(persistence.getInitializer(), logger);
+        persistence = new SisuIndexPersistence(NAME, options.dir(), outputDir, logger);
+        data = new TypeCollector(persistence.getInitializer(), logger);
 
         // Initialize if possible
-        for (String serviceName : persistence.tryFind()) {
-            data.getService(serviceName);
+        for (String typeName : persistence.tryFind()) {
+            data.getType(typeName);
         }
-        // data.cache();
+        //data.cache();
     }
 
     @Override
@@ -87,20 +89,15 @@ public class ServiceProviderASTTransformation extends GipsyASTTransformation {
             return;
         }
 
-        for (ClassNode service : findServices(annotations)) {
-            CheckResult implementationResult = isImplementation(classNode, service);
-            if (implementationResult.isError()) {
-                addError(implementationResult.getMessage(), classNode, moduleNode.getContext());
-            } else {
-                register(service.getName(), classNode);
-            }
+        for (ClassNode type : findTypes(annotations)) {
+            register(type.getName(), classNode);
         }
     }
 
     @Override
     protected void writeData() {
         // if (data.isModified()) {
-        if (data.services().isEmpty()) {
+        if (data.types().isEmpty()) {
             logger.note(LogLocation.LOG_FILE, "Writing output");
             try {
                 persistence.delete();
@@ -109,9 +106,9 @@ public class ServiceProviderASTTransformation extends GipsyASTTransformation {
             }
         } else {
             logger.note(LogLocation.LOG_FILE, "Writing output");
-            for (Service service : data.services()) {
+            for (Type type : data.types()) {
                 try {
-                    persistence.write(service.getName(), service.toProviderNamesList());
+                    persistence.write(type.getName(), type.toProviderNamesList());
                 } catch (IOException e) {
                     // TODO print out error
                 }
@@ -122,39 +119,35 @@ public class ServiceProviderASTTransformation extends GipsyASTTransformation {
     }
 
     private CheckResult checkCurrentClass(ClassNode currentClass) {
-        if (currentClass.isInterface()) {
+        if (currentClass.isEnum() || currentClass.isInterface()) {
             return CheckResult.valueOf("is not a class");
         }
         if (!isPublic(currentClass.getModifiers())) {
-            return CheckResult.valueOf("is not a public class");
+            return CheckResult.valueOf("is not public");
         }
 
         if (isStatic(currentClass.getModifiers())) {
-            return CheckResult.valueOf("is a static class");
-        }
-
-        if (!hasNoArgsConstructor(currentClass)) {
-            return CheckResult.valueOf("has no public no-args constructor");
+            return CheckResult.valueOf("is static");
         }
 
         return CheckResult.OK;
     }
 
-    private List<ClassNode> findServices(List<AnnotationNode> annotations) {
-        List<ClassNode> services = new ArrayList<ClassNode>();
+    private List<ClassNode> findTypes(List<AnnotationNode> annotations) {
+        List<ClassNode> types = new ArrayList<>();
 
         for (AnnotationNode annotation : annotations) {
             for (Expression expr : findCollectionValueMember(annotation, "value")) {
                 if (expr instanceof ClassExpression) {
-                    services.add(((ClassExpression) expr).getType());
+                    types.add(((ClassExpression) expr).getType());
                 }
             }
         }
 
-        return services;
+        return types;
     }
 
-    private void register(String serviceName, ClassNode provider) {
-        data.getService(serviceName).addProvider(provider.getName());
+    private void register(String typeName, ClassNode provider) {
+        data.getType(typeName).addProvider(provider.getName());
     }
 }

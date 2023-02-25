@@ -1,7 +1,7 @@
 /*
  * SPDX-License-Identifier: Apache-2.0
  *
- * Copyright 2013-2022 Andres Almiray
+ * Copyright 2013-2023 Andres Almiray
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -64,8 +64,8 @@ repositories {
 }
 
 dependencies {
-    api "org.kordamp.jipsy:jipsy-processor:${project.version}"
-    annotationProcessor "org.kordamp.jipsy:jipsy-processor:${project.version}"
+    api "org.kordamp.jipsy:jipsy-processor:${jipsyVersion}"
+    annotationProcessor "org.kordamp.jipsy:jipsy-processor:${jipsyVersion}"
     compileOnly "org.codehaus.groovy:groovy:${groovyVersion}"
     testImplementation "org.codehaus.groovy:groovy:${groovyVersion}"
     testImplementation 'junit:junit:4.13.2'
